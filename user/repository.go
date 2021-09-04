@@ -5,7 +5,7 @@ import (
 )
 
 type Repository interface {
-	save(user User) (User, error)
+	Save(user User) (User, error)
 }
 type repository struct {
 	db *gorm.DB

@@ -44,12 +44,13 @@ func main() {
 	userService := user.NewService(userRepository)
 
 	userInput := user.RegisterUserInput{}
-	userInput.Name = "save via service"
+	userInput.Name = "save from service"
 	userInput.Email = "dagum@mailinator.com"
 	userInput.Occupation = "qa"
 	userInput.Password = "password"
 
 	userService.RegisterUser(userInput)
+
 	// input
 	// handler mapping input to struct
 	// service mapping struct User

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"startcare/helper"
 	"startcare/user"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ type userHandler struct {
 	userService user.Service
 }
 
-func newUserHandler(userService user.Service) *userHandler {
+func NewUserHandler(userService user.Service) *userHandler {
 	return &userHandler{userService}
 }
 
@@ -21,12 +22,23 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		errors := helper.FormatError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Register account failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, response)
+		return
 	}
-	user, err := h.userService.RegisterUser(input)
+	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		response := helper.APIResponse("Register account failed", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	formatter := user.FormatUser(newUser, "tokentokentokentoken")
+
+	response := helper.APIResponse("Account has been registered", http.StatusOK, "success", formatter)
+
+	c.JSON(http.StatusOK, response)
 }

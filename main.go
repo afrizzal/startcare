@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"startcare/handler"
 	"startcare/user"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -43,13 +45,14 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
-	userInput := user.RegisterUserInput{}
-	userInput.Name = "save from service"
-	userInput.Email = "dagum@mailinator.com"
-	userInput.Occupation = "qa"
-	userInput.Password = "password"
+	userHandler := handler.NewUserHandler(userService)
 
-	userService.RegisterUser(userInput)
+	router := gin.Default()
+	api := router.Group("/api/v1")
+
+	api.POST("/users", userHandler.RegisterUser)
+
+	router.Run()
 
 	// input
 	// handler mapping input to struct

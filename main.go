@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"startcare/handler"
 	"startcare/user"
@@ -44,6 +45,16 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
+
+	userByEmail, err := userRepository.FindByEmail("afrizzal@gmail.com")
+	if err != nil {
+		fmt.Println((err.Error()))
+	}
+	if userByEmail.ID == 0 {
+		fmt.Println("User tidak ditemukan")
+	} else {
+		fmt.Println(userByEmail.Name)
+	}
 
 	userHandler := handler.NewUserHandler(userService)
 

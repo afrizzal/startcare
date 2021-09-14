@@ -9,7 +9,7 @@ import (
 type Service interface {
 	RegisterUser(input RegisterUserInput) (User, error)
 	Login(input LoginInput) (User, error)
-	IsEmailAvailabe(input CheckEmailInput) (bool, error)
+	IsEmailAvailable(input CheckEmailInput) (bool, error)
 }
 
 type service struct {
@@ -62,7 +62,7 @@ func (s *service) Login(input LoginInput) (User, error) {
 	return user, nil
 }
 
-func (s *service) IsEmailAvailabe(input CheckEmailInput) (bool, error) {
+func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
 	email := input.Email
 
 	user, err := s.repository.FindByEmail(email)

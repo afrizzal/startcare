@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"startcare/auth"
 	"startcare/handler"
 	"startcare/user"
 
@@ -44,10 +45,13 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
+	authService := auth.NewService()
 
-	userService.SaveAvatar(1, "images/1-profile.png")
+	// fmt.Println(authService.GenerateToken(1001))
 
-	userHandler := handler.NewUserHandler(userService)
+	// userService.SaveAvatar(1, "images/1-profile.png")
+
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")

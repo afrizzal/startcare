@@ -9,6 +9,10 @@ type Service interface {
 type jwtService struct {
 }
 
+func NewService() *jwtService {
+	return &jwtService{}
+}
+
 var SECRET_KEY = []byte("rahasiadong")
 
 func (s *jwtService) GenerateToken(userID int) (string, error) {

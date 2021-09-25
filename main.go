@@ -93,7 +93,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		// Bearer hardcode
 		tokenString := ""
 		arrayToken := strings.Split(authHeader, " ")
-		if len(tokenString) == 2 {
+		if len(arrayToken) == 2 {
 			tokenString = arrayToken[1]
 		}
 

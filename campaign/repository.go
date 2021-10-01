@@ -16,7 +16,7 @@ func NewRepository(db *gorm.DB) *repository {
 }
 
 func (r *repository) FindAll() ([]Campaign, error) {
-	var campaigns []campaign
+	var campaigns []Campaign
 
 	err := r.db.Find(&campaigns).Error
 	if err != nil {

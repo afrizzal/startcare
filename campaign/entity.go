@@ -2,7 +2,7 @@ package campaign
 
 import "time"
 
-type campaign struct {
+type Campaign struct {
 	ID               int
 	UserID           int
 	Name             string

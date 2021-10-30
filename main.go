@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"startcare/auth"
@@ -56,8 +55,8 @@ func main() {
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
-	campaigns, _ := campaignService.FindCampaigns(2)
-	fmt.Println(len(campaigns))
+	//campaigns, _ := campaignService.GetCampaigns(2)
+	//fmt.Println(len(campaigns))
 	// token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0fQ.5uLQPYy4C1VKJ9cr05xswjgH0gwk8uTSiGltkAdHhVM")
 	// if err != nil {
 	// 	fmt.Println("ERROR")
@@ -74,6 +73,7 @@ func main() {
 	// userService.SaveAvatar(1, "images/1-profile.png")
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")
@@ -82,6 +82,8 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 }
